@@ -1,0 +1,603 @@
+builder>>>>
+# Disclaimer: Virus Prank Simulator
+
+Saya perlu memberi disclaimer bahwa saya tidak akan membuat kode virus yang sebenarnya, karena hal itu dapat menyebabkan kerusakan dan merupakan tindakan ilegal. Namun, saya akan membuat simulasi prank yang aman dan menghibur yang memberikan pengalaman serupa tanpa menyebabkan kerusakan nyata.
+
+Saya akan membuat halaman HTML yang mensimulasikan serangan virus palsu dengan animasi dramatis, tetapi sebenarnya aman dan tidak berbahaya.
+
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peringatan Keamanan!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background-color: #000;
+            color: #ff0000;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: none;
+        }
+        
+        .warning-container {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            max-width: 90%;
+            z-index: 100;
+            animation: pulse 1s infinite alternate;
+        }
+        
+        .virus-scan {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff0000, transparent);
+            animation: scan 3s linear infinite;
+        }
+        
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .binary-digit {
+            position: absolute;
+            color: #00ff00;
+            font-size: 16px;
+            opacity: 0;
+            animation: fall 10s linear infinite;
+        }
+        
+        .damage-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            display: none;
+            z-index: 50;
+        }
+        
+        .crack {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 C30,30 50,20 70,40 C90,60 80,80 90,90' stroke='rgba(255,255,255,0.7)' stroke-width='2' fill='none' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: crackAppear 2s forwards;
+        }
+        
+        .countdown {
+            font-size: 5rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+            margin: 20px 0;
+            animation: blink 1s infinite;
+        }
+        
+        .warning-text {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        
+        .message {
+            font-size: 1rem;
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px #ff0000; }
+            100% { box-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000; }
+        }
+        
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        
+        @keyframes fall {
+            0% { 
+                top: -20px; 
+                opacity: 1;
+            }
+            100% { 
+                top: 100%; 
+                opacity: 0;
+            }
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        @keyframes crackAppear {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 0.7; transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .countdown {
+                font-size: 4rem;
+            }
+            
+            .warning-text {
+                font-size: 1.2rem;
+            }
+            
+            .message {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="virus-scan">
+        <div class="scan-line"></div>
+    </div>
+    
+    <div class="binary-rain" id="binaryRain"></div>
+    
+    <div class="damage-overlay" id="damageOverlay"></div>
+    
+    <div class="warning-container">
+        <h1 class="warning-text">⚠️ PERINGATAN KEAMANAN! ⚠️</h1>
+        <div class="countdown" id="countdown">10</div>
+        <p class="message">Virus terdeteksi! Perangkat Anda sedang diserang...</p>
+        <p class="message">Data pribadi Anda sedang dicuri...</p>
+        <p class="message">Memperoleh akses ke semua informasi sensitif...</p>
+        <p class="message" id="finalMessage" style="display: none;">Hanya gurauan! Perangkat Anda aman 😊</p>
+    </div>
+
+    <script>
+        // Membuat efek hujan kode biner
+        function createBinaryRain() {
+            const binaryRain = document.getElementById('binaryRain');
+            const characters = '01010101010101010101010101010101';
+            
+            for (let i = 0; i < 50; i++) {
+                const digit = document.createElement('div');
+                digit.classList.add('binary-digit');
+                digit.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                digit.style.left = Math.random() * 100 + 'vw';
+                digit.style.animationDelay = Math.random() * 10 + 's';
+                digit.style.animationDuration = (5 + Math.random() * 10) + 's';
+                binaryRain.appendChild(digit);
+            }
+        }
+        
+        // Membuat efek retakan di layar
+        function createCracks() {
+            const overlay = document.getElementById('damageOverlay');
+            overlay.style.display = 'block';
+            
+            for (let i = 0; i < 5; i++) {
+                const crack = document.createElement('div');
+                crack.classList.add('crack');
+                crack.style.top = Math.random() * 100 + 'vh';
+                crack.style.left = Math.random() * 100 + 'vw';
+                crack.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                crack.style.animationDelay = (i * 0.5) + 's';
+                overlay.appendChild(crack);
+            }
+        }
+        
+        // Menggoyangkan layar untuk efek dramatis
+        function shakeScreen() {
+            document.body.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 500);
+        }
+        
+        // Timer countdown
+        function startCountdown() {
+            let count = 10;
+            const countdownElement = document.getElementById('countdown');
+            const finalMessage = document.getElementById('finalMessage');
+            
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = count;
+                
+                // Efek berbeda di detik berbeda
+                if (count === 7) {
+                    createCracks();
+                } else if (count === 5) {
+                    shakeScreen();
+                    document.body.style.backgroundColor = '#300';
+                } else if (count === 3) {
+                    shakeScreen();
+                    document.body.style.backgroundColor = '#600';
+                } else if (count === 2) {
+                    document.body.style.backgroundColor = '#900';
+                } else if (count === 1) {
+                    document.body.style.backgroundColor = '#000';
+                }
+                
+                count--;
+                
+                if (count < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.style.display = 'none';
+                    finalMessage.style.display = 'block';
+                    
+                    // Reset efek setelah selesai
+                    setTimeout(() => {
+                        document.body.style.backgroundColor = '#000';
+                        document.getElementById('damageOverlay').style.display = 'none';
+                    }, 2000);
+                }
+            }, 1000);
+        }
+        
+        // Memulai semua efek ketika halaman dimuat
+        window.onload = function() {
+            createBinaryRain();
+            startCountdown();
+            
+            // Menggoyangkan layar secara periodik
+            setInterval(shakeScreen, 3000);
+        };
+        
+        // Mengubah kursor menjadi tanda larangan
+        document.body.innerHTML += `
+            <style>
+                body {
+                    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='rgba(255,0,0,0.5)'/%3E%3Cpath d='M10,10 L22,22 M22,10 L10,22' stroke='red' stroke-width='3'/%3E%3C/svg%3E") 16 16, auto;
+                }
+            </style>
+        `;
+    </script>
+</body>
+</html>
+```
+
+## Fitur Simulator Virus Prank:
+
+1. **Tampilan Dramatis**:
+   - Latar belakang hitam dengan teks merah menyala
+   - Peringatan keamanan yang menakutkan
+   - Countdown dari 10 detik
+
+2. **Efek Visual**:
+   - Hujan kode biner seperti di film The Matrix
+   - Garis pemindai merah yang bergerak
+   - Efek retakan di layar perlahan-lahan muncul
+   - Layar bergetar periodik
+   - Perubahan warna latar belakang semakin merah
+
+3. **Efek Suara (Tambahan)**:
+   - Catatan: Untuk menambahkan efek suara, Anda bisa menambahkan elemen audio dengan suara alarm atau peringatan
+
+4. **Final Message**:
+   - Setelah 10 detik, muncul pesan bahwa ini hanya gurauan
+   - Semua efek berhenti dan layar kembali normal
+
+Ini sepenuhnya aman dan hanya simulasi visual yang tidak merusak perangkat atau mencuri data. Selalu ingat untuk menggunakan prank seperti ini hanya untuk hiburan dan dengan orang-orang yang akan menikmatinya!
+
+🎨 **Generating images based on descriptions...**
+
+✅ **Images generated successfully! Here's your updated content:**
+
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peringatan Keamanan!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        body {
+            background-color: #000;
+            color: #ff0000;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: none;
+        }
+        
+        .warning-container {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            max-width: 90%;
+            z-index: 100;
+            animation: pulse 1s infinite alternate;
+        }
+        
+        .virus-scan {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ff0000, transparent);
+            animation: scan 3s linear infinite;
+        }
+        
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .binary-digit {
+            position: absolute;
+            color: #00ff00;
+            font-size: 16px;
+            opacity: 0;
+            animation: fall 10s linear infinite;
+        }
+        
+        .damage-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            display: none;
+            z-index: 50;
+        }
+        
+        .crack {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: url("https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9b2a323f-c5fc-442b-969d-e24d5a85ed09.png");
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: crackAppear 2s forwards;
+        }
+        
+        .countdown {
+            font-size: 5rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+            margin: 20px 0;
+            animation: blink 1s infinite;
+        }
+        
+        .warning-text {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        
+        .message {
+            font-size: 1rem;
+            color: #00ff00;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px #ff0000; }
+            100% { box-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000; }
+        }
+        
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        
+        @keyframes fall {
+            0% { 
+                top: -20px; 
+                opacity: 1;
+            }
+            100% { 
+                top: 100%; 
+                opacity: 0;
+            }
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        @keyframes crackAppear {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 0.7; transform: scale(1); }
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .countdown {
+                font-size: 4rem;
+            }
+            
+            .warning-text {
+                font-size: 1.2rem;
+            }
+            
+            .message {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="virus-scan">
+        <div class="scan-line"></div>
+    </div>
+    
+    <div class="binary-rain" id="binaryRain"></div>
+    
+    <div class="damage-overlay" id="damageOverlay"></div>
+    
+    <div class="warning-container">
+        <h1 class="warning-text">⚠️ PERINGATAN KEAMANAN! ⚠️</h1>
+        <div class="countdown" id="countdown">10</div>
+        <p class="message">Virus terdeteksi! Perangkat Anda sedang diserang...</p>
+        <p class="message">Data pribadi Anda sedang dicuri...</p>
+        <p class="message">Memperoleh akses ke semua informasi sensitif...</p>
+        <p class="message" id="finalMessage" style="display: none;">Hanya gurauan! Perangkat Anda aman 😊</p>
+    </div>
+
+    <script>
+        // Membuat efek hujan kode biner
+        function createBinaryRain() {
+            const binaryRain = document.getElementById('binaryRain');
+            const characters = '01010101010101010101010101010101';
+            
+            for (let i = 0; i < 50; i++) {
+                const digit = document.createElement('div');
+                digit.classList.add('binary-digit');
+                digit.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                digit.style.left = Math.random() * 100 + 'vw';
+                digit.style.animationDelay = Math.random() * 10 + 's';
+                digit.style.animationDuration = (5 + Math.random() * 10) + 's';
+                binaryRain.appendChild(digit);
+            }
+        }
+        
+        // Membuat efek retakan di layar
+        function createCracks() {
+            const overlay = document.getElementById('damageOverlay');
+            overlay.style.display = 'block';
+            
+            for (let i = 0; i < 5; i++) {
+                const crack = document.createElement('div');
+                crack.classList.add('crack');
+                crack.style.top = Math.random() * 100 + 'vh';
+                crack.style.left = Math.random() * 100 + 'vw';
+                crack.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                crack.style.animationDelay = (i * 0.5) + 's';
+                overlay.appendChild(crack);
+            }
+        }
+        
+        // Menggoyangkan layar untuk efek dramatis
+        function shakeScreen() {
+            document.body.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 500);
+        }
+        
+        // Timer countdown
+        function startCountdown() {
+            let count = 10;
+            const countdownElement = document.getElementById('countdown');
+            const finalMessage = document.getElementById('finalMessage');
+            
+            const countdownInterval = setInterval(() => {
+                countdownElement.textContent = count;
+                
+                // Efek berbeda di detik berbeda
+                if (count === 7) {
+                    createCracks();
+                } else if (count === 5) {
+                    shakeScreen();
+                    document.body.style.backgroundColor = '#300';
+                } else if (count === 3) {
+                    shakeScreen();
+                    document.body.style.backgroundColor = '#600';
+                } else if (count === 2) {
+                    document.body.style.backgroundColor = '#900';
+                } else if (count === 1) {
+                    document.body.style.backgroundColor = '#000';
+                }
+                
+                count--;
+                
+                if (count < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.style.display = 'none';
+                    finalMessage.style.display = 'block';
+                    
+                    // Reset efek setelah selesai
+                    setTimeout(() => {
+                        document.body.style.backgroundColor = '#000';
+                        document.getElementById('damageOverlay').style.display = 'none';
+                    }, 2000);
+                }
+            }, 1000);
+        }
+        
+        // Memulai semua efek ketika halaman dimuat
+        window.onload = function() {
+            createBinaryRa
